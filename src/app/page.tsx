@@ -49,11 +49,11 @@ export default function Home() {
     'Beneran? 🥰',
     'Awww... 🫶',
     'Uwuwuwu! 💞',
-    'Jadi Valentine! 💝',
+    'Jadi Pacar Akuh! 💝',
   ];
 
   const romanticTexts = [
-    'Be my Valentine forever? 💌',
+    'Be my Babe forever? 💌',
   ];
 
   const [noText, setNoText] = useState('No');
@@ -114,32 +114,35 @@ export default function Home() {
   return (
     <div
       style={{ backgroundImage: `url(${BG.src})` }}
-      className="min-h-screen bg-cover bg-no-repeat flex flex-col justify-center overflow-hidden items-center sm:flex-row sm:space-x-4 sm:gap-5"
+      className="min-h-screen bg-cover bg-no-repeat flex flex-col justify-center items-center px-4 py-12 sm:py-20"
     >
-      <h1 className="text-4xl font-bold mb-8 text-center sm:text-left bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-pink-300 ">
-      Do U Want to Be My Valentine, Chika?
-      </h1>
-      <div className="flex gap-1 justify-center">
-        <motion.button
-          onClick={handleNoClick}
-          className="bg-white text-pink-500 border-pink-500 border font-bold py-2 px-12 rounded transition-transform"
-          initial={{ scale: 1 }}
-          animate={{ scale: noScale }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          disabled={isDisabled}
-        >
-          {noText}
-        </motion.button>
-        <motion.button
-          onClick={handleYesClick}
-          className="bg-pink-500 text-white font-bold py-2 px-12 rounded transition-transform"
-          initial={{ scale: 1 }}
-          animate={{ scale: yesScale }}
-          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-          disabled={isDisabled}
-        >
-          {yesText}
-        </motion.button>
+      <div className="w-full max-w-xl flex flex-col items-center gap-6">
+        <h1 className="text-4xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-600 to-pink-300">
+          Do U Want to Be My Babe, Jingga?
+        </h1>
+
+        <div className="flex gap-2 justify-center">
+          <motion.button
+            onClick={handleNoClick}
+            className="bg-white text-pink-500 border-pink-500 border font-bold py-2 px-12 rounded transition-transform"
+            initial={{ scale: 1 }}
+            animate={{ scale: noScale }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            disabled={isDisabled}
+          >
+            {noText}
+          </motion.button>
+          <motion.button
+            onClick={handleYesClick}
+            className="bg-pink-500 text-white font-bold py-2 px-12 rounded transition-transform"
+            initial={{ scale: 1 }}
+            animate={{ scale: yesScale }}
+            transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            disabled={isDisabled}
+          >
+            {yesText}
+          </motion.button>
+        </div>
       </div>
 
       <AnimatePresence>
@@ -154,10 +157,9 @@ export default function Home() {
             <div className="bg-white rounded-lg flex flex-col gap-3 p-8 text-center sm:w-1/2">
               <h2 className="text-2xl font-bold text-pink-500">💖 Yeay! 💖</h2>
               <p className="text-xl text-pink-500">{romanticText}</p>
-              <Link href={'/love'} className='bg-pink-500 p-6 py-1.5 rounded-md text-white'>
-              Lanjut
+              <Link href={'/love'} className="bg-pink-500 px-6 py-1.5 rounded-md text-white">
+                Lanjut
               </Link>
-             
             </div>
           </motion.div>
         )}

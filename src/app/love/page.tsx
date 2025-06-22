@@ -86,14 +86,14 @@ export default function Love() {
   return (
     <div style={{ backgroundImage: `url(${BG.src})` }} className="min-h-screen bg-cover bg-no-repeat bg-pink-100 flex justify-center items-center overflow-hidden">
       <div className="relative w-80 h-[400px] flex flex-col-reverse items-center justify-center gap-3">
-        <p className='font-bold text-pink-600 bg-white rounded-lg px-4 py-2'>Chika Dwi Rivanto.</p>
+        <p className='font-bold text-pink-600 bg-white rounded-lg px-4 py-2'>Langit Jingga.</p>
         <motion.div
           className="relative text-6xl"
           animate={{ scale: [1, 1.2, 1] }}
           transition={{ repeat: Infinity, duration: 1.5 }}
         >❤️</motion.div>
 
-        <p className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-pink-300'>I Love You ! Forever Ever And Ever.</p>
+        <p className='font-semibold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-pink-300'>Happy Birthday!</p>
 
         {texts.map((text, index) => (
           <motion.div
