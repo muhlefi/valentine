@@ -220,10 +220,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-
-            <p className="mt-6 font-fredoka text-pink-600">
-              Belum bisa masuk halaman utama sebelum waktunya ya sayang.
-            </p>
           </motion.div>
         </section>
       ) : (
