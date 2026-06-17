@@ -12,6 +12,10 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        patrick: ["var(--font-patrick)", "cursive"],
+        fredoka: ["var(--font-fredoka)", "sans-serif"],
+      },
     },
   },
   plugins: [],
