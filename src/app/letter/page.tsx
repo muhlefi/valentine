@@ -11,7 +11,7 @@ const letterContent =
   'Dengan semua cinta,\n' +
   'Capi ❤️❤️';
 
-const flowerEmojis = ['🌸', '🌺', '🌷', '🌹', '🌼'];
+const cornerHearts = ['💗', '💕', '💖', '💞'];
 
 export default function Letter() {
   const [displayedText, setDisplayedText] = useState('');
@@ -20,21 +20,6 @@ export default function Letter() {
   const [audioDuration, setAudioDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [flowers, setFlowers] = useState<
-    Array<{ id: number; emoji: string; x: number; y: number; delay: number; size: number }>
-  >([]);
-
-  useEffect(() => {
-    const generated = Array.from({ length: 12 }, (_, i) => ({
-      id: i,
-      emoji: flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)],
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      delay: Math.random() * 3,
-      size: 1 + Math.random() * 1.5,
-    }));
-    setFlowers(generated);
-  }, []);
 
   useEffect(() => {
     let i = 0;
@@ -42,14 +27,14 @@ export default function Letter() {
     setIsTypingComplete(false);
 
     const timer = setInterval(() => {
-      if (i < letterContent.length) {
-        setDisplayedText(letterContent.slice(0, i + 1));
-        i++;
-      } else {
+      i = Math.min(i + 3, letterContent.length);
+      setDisplayedText(letterContent.slice(0, i));
+
+      if (i >= letterContent.length) {
         setIsTypingComplete(true);
         clearInterval(timer);
       }
-    }, 25);
+    }, 40);
 
     return () => clearInterval(timer);
   }, []);
@@ -58,20 +43,21 @@ export default function Letter() {
     const audio = new Audio('/pretty-little-baby.mp3');
     audioRef.current = audio;
 
-    audio.addEventListener('loadedmetadata', () => {
-      setAudioDuration(audio.duration);
-    });
-
-    audio.addEventListener('timeupdate', () => {
-      setCurrentTime(audio.currentTime);
-    });
-
-    audio.addEventListener('ended', () => {
+    const handleLoadedMetadata = () => setAudioDuration(audio.duration);
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleEnded = () => {
       setIsPlaying(false);
       setCurrentTime(0);
-    });
+    };
+
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('ended', handleEnded);
 
     return () => {
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('ended', handleEnded);
       audio.pause();
       audio.remove();
     };
@@ -81,10 +67,13 @@ export default function Letter() {
     if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+      setIsPlaying(false);
+      return;
     }
-    setIsPlaying(!isPlaying);
+
+    audioRef.current.play().then(() => {
+      setIsPlaying(true);
+    }).catch(() => {});
   };
 
   const formatTime = (seconds: number) => {
@@ -98,51 +87,46 @@ export default function Letter() {
       style={{ backgroundImage: `url(${BG.src})` }}
       className="min-h-screen bg-cover bg-no-repeat flex flex-col items-center px-4 py-12 relative overflow-hidden"
     >
-      {flowers.map((f) => (
-        <motion.div
-          key={f.id}
-          className="absolute pointer-events-none select-none"
-          style={{ left: `${f.x}%`, top: `${f.y}%`, fontSize: `${f.size}rem` }}
-          animate={{ y: [0, -25, 0], rotate: [0, 20, -20, 0], opacity: [0.5, 1, 0.5] }}
-          transition={{ repeat: Infinity, duration: 4 + f.delay, delay: f.delay, ease: 'easeInOut' }}
+      {cornerHearts.map((emoji, index) => (
+        <div
+          key={`${emoji}-${index}`}
+          className="absolute pointer-events-none opacity-70 text-2xl"
+          style={{
+            left: `${index % 2 === 0 ? 8 : 82}%`,
+            top: `${24 + index * 80}px`,
+          }}
         >
-          {f.emoji}
-        </motion.div>
+          {emoji}
+        </div>
       ))}
 
       <div className="w-full max-w-sm flex flex-col items-center gap-8 z-10 mb-24">
         <motion.h1
           className="font-patrick text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 via-rose-400 to-pink-300 drop-shadow-sm"
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.45 }}
         >
           ❤️❤️ Dari Hati Capi
         </motion.h1>
 
         <motion.div
-          className="w-full backdrop-blur-lg bg-white/20 border border-pink-200/40 shadow-xl rounded-2xl p-5"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          className="w-full backdrop-blur-md bg-white/20 border border-pink-200/40 shadow-xl rounded-2xl p-5"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
         >
           <pre className="font-fredoka text-pink-800 text-sm leading-relaxed whitespace-pre-wrap font-medium">
             {displayedText}
-            {!isTypingComplete && (
-              <motion.span
-                className="inline-block w-0.5 h-4 bg-pink-500 ml-0.5"
-                animate={{ opacity: [1, 0] }}
-                transition={{ repeat: Infinity, duration: 0.8 }}
-              />
-            )}
+            {!isTypingComplete && <span className="inline-block ml-0.5">|</span>}
           </pre>
         </motion.div>
 
         <motion.div
-          className="w-full backdrop-blur-lg bg-white/20 border border-pink-200/40 shadow-xl rounded-2xl p-5"
-          initial={{ opacity: 0, y: 30 }}
+          className="w-full backdrop-blur-md bg-white/20 border border-pink-200/40 shadow-xl rounded-2xl p-5"
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
+          transition={{ duration: 0.4, delay: 0.2 }}
         >
           <h2 className="font-patrick text-xl text-pink-600 text-center mb-4">
             🎵 Favorite Music
@@ -157,8 +141,7 @@ export default function Letter() {
               <motion.button
                 onClick={togglePlay}
                 className="w-10 h-10 rounded-full bg-gradient-to-r from-pink-400 to-rose-400 text-white text-lg shadow-lg flex items-center justify-center shrink-0"
-                whileTap={{ scale: 0.9 }}
-                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {isPlaying ? '⏸️' : '▶️'}
               </motion.button>
@@ -177,13 +160,7 @@ export default function Letter() {
           </div>
         </motion.div>
 
-        <motion.div
-          className="text-3xl"
-          animate={{ scale: [1, 1.3, 1] }}
-          transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-        >
-          💗
-        </motion.div>
+        <div className="text-3xl">💗</div>
 
         <Link
           href="/love"

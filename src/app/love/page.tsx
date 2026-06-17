@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import BG from '@/assets/bg.png';
 import Foto1 from '@/assets/1.jpeg';
@@ -42,35 +42,35 @@ const texts = [
 ];
 
 const images = [Foto1, Foto2, Foto3, Foto4, Foto5, Foto6, Foto7, Foto8];
-const flowerEmojis = ['🌸', '🌺', '🌷', '🌹', '🌼'];
+const floatingHearts = ['💗', '💕', '💖', '💞'];
 
 const allCards = [
-  ...texts.map((t, i) => ({ type: 'text' as const, text: t, id: `text-${i}` })),
-  ...images.map((img, i) => ({ type: 'image' as const, img, index: i, id: `img-${i}` })),
+  ...texts.map((text, index) => ({ type: 'text' as const, text, id: `text-${index}` })),
+  ...images.map((img, index) => ({ type: 'image' as const, img, index, id: `img-${index}` })),
 ];
 
 export default function Love() {
   const [displayedText, setDisplayedText] = useState('');
   const [isTypingComplete, setIsTypingComplete] = useState(false);
   const [view, setView] = useState<'letter' | 'cards'>('letter');
+  const [activeCardIndex, setActiveCardIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const audioStarted = useRef(false);
 
-  const [petals, setPetals] = useState<
-    Array<{ id: number; emoji: string; x: number; delay: number; duration: number; size: number }>
-  >([]);
+  const ornaments = useMemo(
+    () =>
+      Array.from({ length: 5 }, (_, index) => ({
+        id: index,
+        emoji: floatingHearts[index % floatingHearts.length],
+        left: 12 + index * 18,
+        top: 12 + (index % 2) * 70,
+      })),
+    [],
+  );
 
-  useEffect(() => {
-    const generated = Array.from({ length: 12 }, (_, i) => ({
-      id: i,
-      emoji: flowerEmojis[i % flowerEmojis.length],
-      x: Math.random() * 100,
-      delay: Math.random() * 8,
-      duration: 10 + Math.random() * 10,
-      size: 0.8 + Math.random() * 1.2,
-    }));
-    setPetals(generated);
-  }, []);
+  const visibleCards = useMemo(() => {
+    return allCards.slice(activeCardIndex, activeCardIndex + 3);
+  }, [activeCardIndex]);
 
   useEffect(() => {
     const audio = new Audio('/pretty-little-baby.mp3');
@@ -89,24 +89,34 @@ export default function Love() {
     setIsTypingComplete(false);
 
     const timer = setInterval(() => {
-      if (i < letterContent.length) {
-        setDisplayedText(letterContent.slice(0, i + 1));
-        i++;
-      } else {
+      i = Math.min(i + 3, letterContent.length);
+      setDisplayedText(letterContent.slice(0, i));
+
+      if (i >= letterContent.length) {
         setIsTypingComplete(true);
         clearInterval(timer);
       }
-    }, 20);
+    }, 35);
 
     return () => clearInterval(timer);
   }, []);
 
   const startMusic = () => {
     if (!audioStarted.current && audioRef.current) {
-      audioRef.current.play().then(() => {
-        audioStarted.current = true;
-      }).catch(() => {});
+      audioRef.current
+        .play()
+        .then(() => {
+          audioStarted.current = true;
+        })
+        .catch(() => {});
     }
+  };
+
+  const showNextCard = () => {
+    setActiveCardIndex((prev) => {
+      if (prev >= allCards.length - 1) return 0;
+      return prev + 1;
+    });
   };
 
   return (
@@ -114,26 +124,14 @@ export default function Love() {
       style={{ backgroundImage: `url(${BG.src})` }}
       className="h-screen bg-cover bg-no-repeat bg-pink-100 flex flex-col items-center relative overflow-hidden"
     >
-      {petals.map((p) => (
-        <motion.div
-          key={p.id}
-          className="fixed pointer-events-none select-none z-10"
-          style={{ left: `${p.x}%`, fontSize: `${p.size}rem` }}
-          animate={{
-            y: ['-10vh', '110vh'],
-            x: [0, 30, -30, 20, 0],
-            rotate: [0, 360],
-            opacity: [0.8, 0.5, 0.2, 0],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: p.duration,
-            delay: p.delay,
-            ease: 'linear',
-          }}
+      {ornaments.map((item) => (
+        <div
+          key={item.id}
+          className="absolute pointer-events-none opacity-70"
+          style={{ left: `${item.left}%`, top: `${item.top}px` }}
         >
-          {p.emoji}
-        </motion.div>
+          {item.emoji}
+        </div>
       ))}
 
       {view === 'letter' && (
@@ -142,44 +140,35 @@ export default function Love() {
             className="font-patrick text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-600 via-rose-400 to-pink-300 drop-shadow-sm"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.5 }}
           >
             ❤️❤️ Dari Hati Capi
           </motion.h1>
 
           <motion.div
-            className="w-full backdrop-blur-lg bg-white/20 border border-pink-200/40 shadow-xl rounded-2xl p-4"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            className="w-full backdrop-blur-md bg-white/20 border border-pink-200/40 shadow-xl rounded-2xl p-4"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
           >
             <pre className="font-fredoka text-pink-800 text-sm leading-relaxed whitespace-pre-wrap font-medium">
               {displayedText}
-              {!isTypingComplete && (
-                <motion.span
-                  className="inline-block w-0.5 h-4 bg-pink-500 ml-0.5"
-                  animate={{ opacity: [1, 0] }}
-                  transition={{ repeat: Infinity, duration: 0.8 }}
-                />
-              )}
+              {!isTypingComplete && <span className="inline-block ml-0.5">|</span>}
             </pre>
           </motion.div>
 
-          <motion.div
-            className="text-3xl"
-            animate={{ scale: [1, 1.3, 1] }}
-            transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-          >
-            💗
-          </motion.div>
+          <div className="text-3xl">💗</div>
 
           {isTypingComplete && (
             <motion.button
-              onClick={() => { setView('cards'); startMusic(); }}
-              className="font-fredoka font-bold text-white bg-gradient-to-r from-pink-400 to-rose-400 py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95"
-              initial={{ opacity: 0, y: 20 }}
+              onClick={() => {
+                setView('cards');
+                startMusic();
+              }}
+              className="font-fredoka font-bold text-white bg-gradient-to-r from-pink-400 to-rose-400 py-3 px-8 rounded-full shadow-lg transition-all active:scale-95"
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.35 }}
             >
               Lihat Momen Kita 💕
             </motion.button>
@@ -194,25 +183,18 @@ export default function Love() {
               className="font-patrick text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-rose-400 to-pink-300 drop-shadow-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.35 }}
             >
               Sayaanggg 💕
             </motion.p>
 
-            <motion.div
-              className="text-3xl"
-              initial={{ opacity: 0 }}
-              animate={{ scale: [1, 1.2, 1], opacity: 1 }}
-              transition={{ repeat: Infinity, duration: 1.5, ease: 'easeInOut' }}
-            >
-              ❤️
-            </motion.div>
+            <div className="text-3xl">❤️</div>
 
             <motion.p
               className="font-patrick text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-rose-300 drop-shadow-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.15 }}
+              transition={{ duration: 0.35, delay: 0.1 }}
             >
               Happy Birthday sayangg.
             </motion.p>
@@ -220,37 +202,66 @@ export default function Love() {
 
           <div className="relative flex-1 w-full flex items-center justify-center">
             <div className="relative w-full max-h-[65vh]" style={{ aspectRatio: '3 / 4' }}>
-              {allCards.map((card, i) => (
-                <motion.div
-                  key={card.id}
-                  className="absolute inset-0 backdrop-blur-md bg-pink-100/30 border border-pink-200/40 shadow-xl rounded-2xl p-5 flex items-center justify-center select-none"
-                  style={{ transform: `translateY(${i * 3}px)`, zIndex: allCards.length - i }}
-                  drag
-                  dragElastic={1}
-                  whileTap={{ cursor: 'grabbing' }}
-                >
-                  {card.type === 'image' ? (
-                    <Image
-                      draggable={false}
-                      src={card.img}
-                      alt={`Foto ${card.index + 1}`}
-                      className="w-36 aspect-auto object-contain rounded-xl shadow-md"
-                    />
-                  ) : (
-                    <span className="font-fredoka text-pink-700 font-medium text-sm leading-relaxed drop-shadow-sm text-center">
-                      {card.text}
-                    </span>
-                  )}
-                </motion.div>
-              ))}
+              {visibleCards
+                .slice()
+                .reverse()
+                .map((card, stackIndex) => {
+                  const isTopCard = stackIndex === visibleCards.length - 1;
+
+                  return (
+                    <motion.div
+                      key={card.id}
+                      className="absolute inset-0 backdrop-blur-sm bg-pink-100/35 border border-pink-200/40 shadow-xl rounded-2xl p-5 flex items-center justify-center select-none"
+                      style={{
+                        transform: `translateY(${(visibleCards.length - 1 - stackIndex) * 8}px) scale(${1 - (visibleCards.length - 1 - stackIndex) * 0.03})`,
+                        zIndex: stackIndex + 1,
+                      }}
+                      drag={isTopCard ? 'x' : false}
+                      dragElastic={0.2}
+                      dragConstraints={{ left: 0, right: 0 }}
+                      whileTap={isTopCard ? { cursor: 'grabbing' } : undefined}
+                      onDragEnd={(_, info) => {
+                        if (isTopCard && Math.abs(info.offset.x) > 80) {
+                          showNextCard();
+                        }
+                      }}
+                      onClick={() => {
+                        if (isTopCard) showNextCard();
+                      }}
+                    >
+                      {card.type === 'image' ? (
+                        <Image
+                          draggable={false}
+                          src={card.img}
+                          alt={`Foto ${card.index + 1}`}
+                          className="w-40 max-h-[52vh] object-contain rounded-xl shadow-md"
+                          priority={activeCardIndex === 0 && card.index === 0}
+                          loading={activeCardIndex === 0 && card.index === 0 ? 'eager' : 'lazy'}
+                        />
+                      ) : (
+                        <span className="font-fredoka text-pink-700 font-medium text-sm leading-relaxed drop-shadow-sm text-center">
+                          {card.text}
+                        </span>
+                      )}
+                    </motion.div>
+                  );
+                })}
             </div>
           </div>
+
+          <button
+            type="button"
+            onClick={showNextCard}
+            className="font-fredoka text-sm font-semibold text-pink-600 bg-white/45 border border-pink-200/60 rounded-full px-5 py-2 shadow-sm"
+          >
+            Next card
+          </button>
 
           <motion.p
             className="font-patrick text-lg text-pink-500 drop-shadow-lg pb-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.5 }}
+            transition={{ delay: 0.2, duration: 0.35 }}
           >
             💗 Love You Forever 💗
           </motion.p>
