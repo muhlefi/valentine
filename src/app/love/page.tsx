@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { motion } from 'framer-motion';
 import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
@@ -13,34 +13,32 @@ import Foto7 from '@/assets/7.jpeg';
 import Foto8 from '@/assets/8.jpeg';
 
 const letterContent =
-  'Sayangku,\n\n' +
-  'Dari pertama kali aku lihat kamu, aku udah tau kalau kamu itu beda. Senyum kamu, cara kamu ngomong, cara kamu ngeliat hal-hal kecil... semuanya bikin aku jatuh cinta setiap hari.\n\n' +
-  'Aku bersyukur banget bisa kenal kamu. Kamu bikin hidup aku jadi penuh warna, penuh tawa, dan penuh cinta.\n\n' +
-  'Aku mau jadi tempat kamu pulang, jadi alasan kamu senyum, jadi bagian dari setiap cerita kamu.\n\n' +
-  'I love you, Sayang. More than anything.\n\n' +
-  'Selamanya,\n' +
-  'Your Babe 💌';
+  'Happy Birthday sayangg.\n\n' +
+  'thankss sebab alwayss ada dengan saya walaupun kita selalu gaduhh tapi saya janjii saya always support awak and try untuk buat awak happy everyday sorry kalau hadiah saya ni tak seberapa hihih just nak awak tau buat kali yang ke 10000 saya sayangg awakk sangatt sangattt\n\n' +
+  "in every other universe i'll always choose you,my nadira.\n\n" +
+  'Dengan semua cinta,\n' +
+  'Capi ❤️❤️';
 
 const texts = [
-  'Geser untuk membuka ❤️',
-  'Cinta itu kayak angin, nggak keliatan tapi kerasa banget. 🌬️',
-  'Kamu selalu bikin hari-hariku lebih berarti. 💕',
-  'Setiap detik sama kamu itu berasa kayak selamanya. ⏳',
-  'Kamu itu jawaban dari tiap doa aku, serius! 🙏',
-  'Nggak ada yang lebih indah dari sayang sama kamu. 🌹',
-  'Akhir cerita? Ya cuma kamu yang aku pilih! 💖',
-  'Pagi-pagi tuh lebih indah kalau langsung kepikiran kamu. 🌞',
-  'Bareng kamu tuh rasanya lengkap banget. 🥰',
-  'Nggak ada kata yang cukup buat gambarin sayang aku ke kamu! 📜',
-  'Mau hujan badai atau panas terik, kamu tetap pelangi aku. 🌈',
-  'Detik tanpa kamu tuh berasa kayak setahun. ⏰',
-  'Aku sayang kamu lebih dari yang bisa aku ungkapin! ❤️',
-  'Sama kamu, aku ngerasa nemu rumah di hati kamu. 🏡',
-  'Kamu itu mimpi yang jadi kenyataan buat aku. 💫',
-  'Sejak ada kamu, hidup aku makin berwarna banget! 🎨',
-  'Kalau sayang kamu itu salah, aku nggak mau bener. ❌',
-  'Semoga kita selalu bareng sampai tua nanti. 🥺❤️',
-  'Jarak nggak bakal bisa ngurangin sayang aku ke kamu! 🌍',
+  'Swipe me gently, I am fragile... just like your boyfriend heart. 😉',
+  'You are my favorite notification, even when it is just "wyd". 💌',
+  'If you were a Wi-Fi signal, I would stand very close forever. 📶',
+  'You are the reason my phone battery and my heart both run out fast. 🔋',
+  'I love you more than naps, and that is a very serious statement. 😴',
+  'You are cute in a way that should probably be illegal. 🚨',
+  'Every love song is basically me being dramatic about you. 🎶',
+  'You are my green flag, red velvet cake, and happy ending. 🍰',
+  'If I had to choose again, I would still pick you and your cute face. 😚',
+  'You make ordinary days feel like surprise dates. ✨',
+  'My favorite place is anywhere you are being adorable. 📍',
+  'You are the plot twist that made my life way better. 💞',
+  'I fell for you and honestly I would do it again for entertainment. 😌',
+  'You are my person, my peace, and my tiny daily chaos. 🤍',
+  'I still get excited talking to you like a teenager with unlimited SMS. 📱',
+  'You are sweeter than cake and more addictive than late-night chats. 🍓',
+  'Loving you is my easiest habit and my favorite one. 🫶',
+  'In a room full of people, I would still look for your face first. 👀',
+  'You are my cutest hello and my hardest goodbye. 🌷',
 ];
 
 const images = [Foto1, Foto2, Foto3, Foto4, Foto5, Foto6, Foto7, Foto8];
@@ -146,7 +144,7 @@ export default function Love() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            💌 Surat Cinta
+            ❤️❤️ Dari Hati Capi
           </motion.h1>
 
           <motion.div
@@ -216,7 +214,7 @@ export default function Love() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.15 }}
             >
-              Happy Birthday!
+              Happy Birthday sayangg.
             </motion.p>
           </div>
 

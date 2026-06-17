@@ -5,13 +5,11 @@ import BG from '@/assets/bg.png';
 import Link from 'next/link';
 
 const letterContent =
-  'Sayangku,\n\n' +
-  'Dari pertama kali aku lihat kamu, aku udah tau kalau kamu itu beda. Senyum kamu, cara kamu ngomong, cara kamu ngeliat hal-hal kecil... semuanya bikin aku jatuh cinta setiap hari.\n\n' +
-  'Aku bersyukur banget bisa kenal kamu. Kamu bikin hidup aku jadi penuh warna, penuh tawa, dan penuh cinta. Setiap momen bareng kamu tuh berasa spesial, bahkan hal-hal sederhana kayak chat random atau saling ledek aja udah cukup bikin hariku.\n\n' +
-  'Aku mau jadi tempat kamu pulang, jadi alasan kamu senyum, jadi bagian dari setiap cerita kamu. Aku mau kita terus bareng, saling support, dan tumbuh sama-sama.\n\n' +
-  'I love you, Sayang. More than anything.\n\n' +
-  'Selamanya,\n' +
-  'Your Babe 💌';
+  'Happy Birthday sayangg.\n\n' +
+  'thankss sebab alwayss ada dengan saya walaupun kita selalu gaduhh tapi saya janjii saya always support awak and try untuk buat awak happy everyday sorry kalau hadiah saya ni tak seberapa hihih just nak awak tau buat kali yang ke 10000 saya sayangg awakk sangatt sangattt\n\n' +
+  "in every other universe i'll always choose you,my nadira.\n\n" +
+  'Dengan semua cinta,\n' +
+  'Capi ❤️❤️';
 
 const flowerEmojis = ['🌸', '🌺', '🌷', '🌹', '🌼'];
 
@@ -119,7 +117,7 @@ export default function Letter() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          💌 Surat Cinta
+          ❤️❤️ Dari Hati Capi
         </motion.h1>
 
         <motion.div

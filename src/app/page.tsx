@@ -54,9 +54,7 @@ export default function Home() {
     'Jadi Pacar Akuh! 💝',
   ];
 
-  const romanticTexts = [
-    'Be my Babe forever? 💌',
-  ];
+  const romanticTexts = ['Yeayy happy birthday sayangg 🎂🎂'];
 
   const [noText, setNoText] = useState('No');
   const [yesText, setYesText] = useState('Yes');
@@ -66,7 +64,6 @@ export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [confetti, setConfetti] = useState(false);
   const [romanticText, setRomanticText] = useState('');
-
   const [flowers, setFlowers] = useState<Array<{ id: number; emoji: string; x: number; y: number; delay: number; size: number }>>([]);
 
   useEffect(() => {
@@ -146,7 +143,7 @@ export default function Home() {
 
       <div className="w-full max-w-xl flex flex-col items-center gap-6 z-10">
         <h1 className="font-patrick text-4xl sm:text-5xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-pink-600 via-rose-400 to-pink-300 drop-shadow-sm">
-          Do U Want to Be My Babe, Sayang?
+          Hyee sayang first of all awak kena mengaku awak comell 🫣
         </h1>
 
         <div className="flex gap-4 justify-center">
@@ -201,7 +198,7 @@ export default function Home() {
                 href={'/love'}
                 className="font-fredoka font-bold bg-gradient-to-r from-pink-400 to-rose-400 px-10 py-2.5 rounded-full text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:from-pink-500 hover:to-rose-500"
               >
-                Lanjut ➡️
+                Next
               </Link>
             </motion.div>
           </motion.div>
